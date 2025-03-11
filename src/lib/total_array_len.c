@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-int total_array_len(char **array)
+int total_array_len(const char **array)
 {
     int res = 0;
 

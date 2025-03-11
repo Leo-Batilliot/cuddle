@@ -67,7 +67,7 @@ void add_node(char *name, int value, list_t *list)
     }
 }
 
-int delete_node(list_t *list, char *name)
+int delete_node(list_t *list, const char *name)
 {
     node_t *current;
     node_t *previous;

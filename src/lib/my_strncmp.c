@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-int my_strncmp(char *str1, char *str2, int n)
+int my_strncmp(const char *str1, const char *str2, int n)
 {
     if (!str1 || !str2 || my_strlen(str1) < n || my_strlen(str2) < n)
         return 84;

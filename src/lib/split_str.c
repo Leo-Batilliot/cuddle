@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-static int is_delim(char *str, char *delim, int *i)
+static int is_delim(const char *str, const char *delim, int *i)
 {
     for (int y = 0; delim[y] != '\0'; y++)
         if (delim[y] == str[*i]) {
@@ -16,7 +16,7 @@ static int is_delim(char *str, char *delim, int *i)
     return 0;
 }
 
-static int count_words(char *str, char *delim)
+static int count_words(const char *str, const char *delim)
 {
     int count = 0;
     int letter_count = 0;
@@ -31,7 +31,7 @@ static int count_words(char *str, char *delim)
     return count;
 }
 
-static char **words_to_array(char **res, char *str, char *delim)
+static char **words_to_array(char **res, const char *str, const char *delim)
 {
     int count = 0;
     int letter_count = 0;
@@ -53,7 +53,7 @@ static char **words_to_array(char **res, char *str, char *delim)
     return res;
 }
 
-static int not_in(char c, char *str)
+static int not_in(char c, const char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
         if (c == str[i])
@@ -61,7 +61,7 @@ static int not_in(char c, char *str)
     return 1;
 }
 
-static int only_seperators(char *str, char *delim)
+static int only_seperators(const char *str, const char *delim)
 {
     for (int i = 0; str[i] != '\0'; i++)
         if (not_in(str[i], delim))
@@ -69,7 +69,7 @@ static int only_seperators(char *str, char *delim)
     return 1;
 }
 
-char **split_str(char *str, char *delim)
+char **split_str(const char *str, const char *delim)
 {
     char **res = NULL;
     int words = 0;

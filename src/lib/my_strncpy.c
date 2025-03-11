@@ -5,9 +5,14 @@
 ** my_strncpy
 */
 
-int my_strncpy(char *str, char *dst, int n)
+int my_strncpy(const char *str, char *dst, int n)
 {
-    for (int i = 0; i < n; i++)
+    int i = 0;
+
+    if (!str)
+        return 84;
+    for (; str[i] != '\0' && i < n; i++)
         dst[i] = str[i];
+    dst[i] = '\0';
     return 0;
 }

@@ -21,6 +21,12 @@ SRC	=	src/lib/split_str.c 		\
 		src/lib/mini_printf.c 		\
 		src/lib/my_strcpy.c 		\
 		src/lib/my_get_nbr.c 		\
+		src/lib/types.c 			\
+		src/lib/str_lowcase.c 		\
+		src/utils/str_type.c 		\
+		src/utils/data_struct.c 	\
+		src/utils/open_file.c 		\
+		src/df_read_csv.c 			\
 
 # COLORS
 RED=\033[31m

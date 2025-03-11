@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-char *my_strcat(char *str1, char *sep, char *str2)
+char *my_strcat(const char *str1, const char *sep, const char *str2)
 {
     char *res;
     int count = 0;

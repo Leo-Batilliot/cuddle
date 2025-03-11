@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "my.h"
 
-int verif(int nb, char *string, int *i)
+int verif(int nb, const char *string, int *i)
 {
     while (string[*i] >= 48 && string[*i] <= 57) {
         nb = nb * 10 + (string[*i] - 48);
@@ -20,7 +20,7 @@ int verif(int nb, char *string, int *i)
     return nb;
 }
 
-int my_atoi(char *string)
+int my_atoi(const char *string)
 {
     int nb = 0;
     int i = 0;

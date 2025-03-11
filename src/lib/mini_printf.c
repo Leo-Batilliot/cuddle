@@ -26,7 +26,7 @@ void my_put_nbr(int output, long nb)
     my_putchar(output, res);
 }
 
-void putstr(int output, char *str)
+void putstr(int output, const char *str)
 {
     if (!str)
         return;
@@ -56,7 +56,7 @@ void process_format(int output, char specifier, va_list ap)
     }
 }
 
-int mini_printf(int output, char *format, ...)
+int mini_printf(int output, const char *format, ...)
 {
     va_list ap;
 

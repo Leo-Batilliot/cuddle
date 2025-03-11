@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-int my_strcmp(char *str1, char *str2)
+int my_strcmp(const char *str1, const char *str2)
 {
     if (!str1 || !str2 || my_strlen(str1) != my_strlen(str2))
         return 84;

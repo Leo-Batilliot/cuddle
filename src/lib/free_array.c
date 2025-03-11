@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-void free_array(char **array)
+void free_array(void **array)
 {
     if (!array)
         return;

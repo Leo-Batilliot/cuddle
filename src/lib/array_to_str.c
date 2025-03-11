@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-char *fill_str(char **array, char *res, char delim)
+char *fill_str(const char **array, char *res, char delim)
 {
     int count = 0;
 
@@ -23,9 +23,9 @@ char *fill_str(char **array, char *res, char delim)
     return res;
 }
 
-char *array_to_str(char **array, char delim)
+char *array_to_str(const char **array, char delim)
 {
-    int len = my_array_len(array);
+    int len = my_array_len((const void **) array);
     int slen = (len - 1);
     char *res = NULL;
 

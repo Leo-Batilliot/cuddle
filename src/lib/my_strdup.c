@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-char *my_strdup(char *dup)
+char *my_strdup(const char *dup)
 {
     int len = 0;
     char *res = NULL;
