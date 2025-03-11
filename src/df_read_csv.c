@@ -39,8 +39,8 @@ static int parse_file_data(
 
     for (int i = 0; getline(line, &size, file) != - 1; i++) {
         data->data = realloc(data->data, sizeof(void **) * (i + 2));
-        data->data[i + 1] = (void **) "caca";
-        data->data[i] = NULL;
+        data->data[i] = (void **) "caca";
+        data->data[i + 1] = NULL;
         if (!data->data) {
             data->data = NULL;
             return 84;
