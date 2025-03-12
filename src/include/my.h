@@ -88,5 +88,6 @@ dataframe_t *init_data(void);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
 dataframe_t *df_read_csv(const char *filename, char *separator);
+int df_write_csv(dataframe_t *dataframe, const char *filename);
 
 #endif
