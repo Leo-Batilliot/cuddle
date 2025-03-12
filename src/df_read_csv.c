@@ -32,47 +32,46 @@ static int set_types(dataframe_t *data)
 }
 
 static int parse_file_data(
-    FILE *file, dataframe_t *data, const char *separator, char **line)
+    FILE *file, dataframe_t *data, const char *separator)
 {
     size_t size = 0;
     char **splt;
+    char *line = NULL;
 
-    for (int i = 0; getline(line, &size, file) != - 1; i++) {
-        data->data = realloc(data->data, sizeof(void **) * (i + 2));
-        data->data[i] = (void **) "caca";
-        data->data[i + 1] = NULL;
-        if (!data->data) {
-            data->data = NULL;
-            return 84;
-        }
-        splt = split_str(*line, separator);
+    for (int i = 0; getline(&line, &size, file) != - 1; i++) {
+        data->data = realloc(data->data, sizeof(void **) * (i + 1));
+        data->data[i] = NULL;
+        if (!data->data)
+            return my_free((void *) line);
+        splt = split_str(line, separator);
         if (!splt || my_array_len((const void **) splt) != data->nb_columns) {
-            free_array((void **) splt);
-            return 84;
+            my_free((void *) line);
+            return free_array((void **) splt);
         }
         data->data[i] = (void **) splt;
         data->nb_rows++;
     }
+    my_free((void *) line);
     return 0;
 }
 
 static int parse_file(FILE *file, dataframe_t *data, const char *separator)
 {
-    char **splt;
+    char **splt = NULL;
     char *line = NULL;
     size_t size = 0;
     int res = 0;
 
     if (getline(&line, &size, file) == - 1)
-        return 84;
-    splt = split_str(line, separator);
-    free(line);
-    line = NULL;
+        res = 84;
+    if (!res)
+        splt = split_str(line, separator);
     if (!splt)
-        return 84;
+        res = 84;
     data->column_names = splt;
-    for (; data->column_names[data->nb_columns]; data->nb_columns++);
-    if (parse_file_data(file, data, separator, &line) || set_types(data))
+    for (; !res && data->column_names[data->nb_columns]; data->nb_columns++);
+    if (res ||
+        parse_file_data(file, data, separator) || set_types(data))
         res = 84;
     free(line);
     return res;

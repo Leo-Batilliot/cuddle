@@ -12,7 +12,7 @@ SRC	=	src/lib/split_str.c 		\
 		src/lib/my_strcmp.c 		\
 		src/lib/my_strncpy.c		\
 		src/lib/my_strcat.c 		\
-		src/lib/free_array.c 		\
+		src/lib/free.c 				\
 		src/lib/linked_lists.c 		\
 		src/lib/my_strdup.c 		\
 		src/lib/array_to_str.c 		\
@@ -37,7 +37,7 @@ RESET=\033[0m
 
 # VARIABLES
 OBJ =	$(SRC:.c=.o)
-CFLAGS = -Wextra -Wall -W -Werror -I src/include
+CFLAGS = -Wextra -Wall -W -Werror -I src/include -g
 CC = ar rcs
 NAME = libcuddle.a
 

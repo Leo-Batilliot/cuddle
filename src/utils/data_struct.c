@@ -32,7 +32,7 @@ void *free_data(dataframe_t *data)
     if (data->column_types)
         free(data->column_types);
     if (data->data) {
-        for (int i = 0; data->data[i]; i++)
+        for (int i = 0; i < data->nb_rows && data->data[i]; i++)
             free_array(data->data[i]);
         free(data->data);
     }

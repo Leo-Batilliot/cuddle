@@ -57,7 +57,7 @@ int is_bool(const char *);
 
 /*    LIB ARRAY    */
 char **split_str(const char *, const char *);
-void free_array(void **);
+int free_array(void **);
 int my_array_len(const void **);
 int total_array_len(const char **);
 
@@ -78,6 +78,7 @@ int free_node(node_t *);
 
 /*    OTHER LIB FUNCTIONS    */
 int mini_printf(int, const char *, ...);
+int my_free(void *);
 
 /*    UTILS FUNCTIONS    */
 column_type_t get_type(const char *);
