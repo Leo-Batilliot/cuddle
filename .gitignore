@@ -3,3 +3,4 @@ tests
 test
 libcuddle.a
 **/*.csv
+**/*.vscode
