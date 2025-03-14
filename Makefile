@@ -26,7 +26,6 @@ SRC	=	src/lib/split_str.c 		\
 		src/utils/str_type.c 		\
 		src/utils/data_struct.c 	\
 		src/utils/open_file.c 		\
-		src/df_head.c 				\
 		src/pandas/df_read_csv.c 	\
 		src/pandas/df_write_csv.c 	\
 		src/pandas/df_shape.c 		\

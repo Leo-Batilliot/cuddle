@@ -91,7 +91,7 @@ column_type_t get_type(const char *);
 FILE *try_to_open(const char *, const char *);
 void *free_data(dataframe_t *);
 dataframe_t *init_data(void);
-char *type_value_to_str(unsigned int);
+char *type_value_to_strr(unsigned int value);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
 dataframe_t *df_read_csv(const char *filename, char *separator);
