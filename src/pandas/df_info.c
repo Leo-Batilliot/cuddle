@@ -6,7 +6,7 @@
 */
 #include "my.h"
 
-char *type_value_to_strr(unsigned int value)
+char *type_value_to_str(unsigned int value)
 {
     char *types[] = {"bool", "int", "unsigned int", "float", "string"};
 
@@ -23,5 +23,5 @@ void df_info(dataframe_t *dataframe)
     for (int i = 0; i < dataframe->nb_columns && dataframe->column_names[i];
         i++)
         printf("- %s: %s\n", dataframe->column_names[i],
-            type_value_to_strr(dataframe->column_types[i]));
+            type_value_to_str(dataframe->column_types[i]));
 }
