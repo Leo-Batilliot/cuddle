@@ -16,8 +16,8 @@ dataframe_t *df_head(dataframe_t *dataframe, int nb_rows)
         mini_printf(2, "Dataframe is NULL.\n");
         return NULL;
     }
-    if (nb_rows > dataframe->nb_rows || nb_rows >= 0)
-        return dataframe;
+    if (nb_rows > dataframe->nb_rows || nb_rows <= 0)
+        return NULL;
     data_cpy = dataframe;
     data_cpy->nb_rows = nb_rows;
     for (; index < data_cpy->nb_rows; index++);
