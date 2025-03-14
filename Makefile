@@ -30,6 +30,7 @@ SRC	=	src/lib/split_str.c 		\
 		src/df_write_csv.c 			\
 		src/df_shape.c 				\
 		src/df_head.c 				\
+		src/utils/copy_instance.c 	\
 
 # COLORS
 RED=\033[31m
