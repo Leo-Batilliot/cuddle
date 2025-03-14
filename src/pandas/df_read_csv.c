@@ -9,7 +9,11 @@
 static column_type_t is_previous_type(
     column_type_t type1, column_type_t type2, int opt)
 {
-    if (opt && type1 != type2)
+    if (!opt)
+        return type2;
+    if ((type1 == INT && type2 == UINT) || (type1 == UINT && type2 == INT))
+        return INT;
+    if (type1 != type2)
         return STRING;
     return type2;
 }
@@ -77,6 +81,15 @@ static int parse_file(FILE *file, dataframe_t *data, const char *separator)
     return res;
 }
 
+static dataframe_t *df_read_main(dataframe_t *data, FILE *fd, char *separator)
+{
+    if (parse_file(fd, data, separator) == 84)
+        data = free_data(data);
+    fclose(fd);
+    free(separator);
+    return data;
+}
+
 dataframe_t *df_read_csv(const char *filename, char *separator)
 {
     dataframe_t *data = init_data();
@@ -85,6 +98,8 @@ dataframe_t *df_read_csv(const char *filename, char *separator)
 
     if (!data)
         return NULL;
+    if (!separator)
+        separator = ",";
     fd = try_to_open(filename, "r");
     if (!fd)
         return free_data(data);
@@ -93,9 +108,5 @@ dataframe_t *df_read_csv(const char *filename, char *separator)
         fclose(fd);
         return free_data(data);
     }
-    if (parse_file(fd, data, sep) == 84)
-        data = free_data(data);
-    fclose(fd);
-    free(sep);
-    return data;
+    return df_read_main(data, fd, sep);
 }

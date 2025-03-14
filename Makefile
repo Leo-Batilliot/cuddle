@@ -26,10 +26,12 @@ SRC	=	src/lib/split_str.c 		\
 		src/utils/str_type.c 		\
 		src/utils/data_struct.c 	\
 		src/utils/open_file.c 		\
-		src/df_read_csv.c 			\
-		src/df_write_csv.c 			\
-		src/df_shape.c 				\
-		src/df_head.c 				\
+		src/pandas/df_read_csv.c 	\
+		src/pandas/df_write_csv.c 	\
+		src/pandas/df_shape.c 		\
+		src/pandas/df_head.c 		\
+		src/pandas/df_info.c 		\
+		src/pandas/df_describe.c 	\
 
 # COLORS
 RED=\033[31m
@@ -40,7 +42,7 @@ RESET=\033[0m
 
 # VARIABLES
 OBJ =	$(SRC:.c=.o)
-CFLAGS = -Wextra -Wall -W -Werror -I src/include -g
+CFLAGS = -Wextra -Wall -W -Werror -I src/include -lm
 CC = ar rcs
 NAME = libcuddle.a
 
