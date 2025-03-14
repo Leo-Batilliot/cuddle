@@ -20,7 +20,7 @@ static int gest_inside(int i, FILE *fd, dataframe_t *dataframe)
         if (!dataframe->data[i][k])
             return 84;
         fprintf(fd, "%s", (char *)dataframe->data[i][k]);
-        print_comma(i, fd, dataframe);
+        print_comma(k, fd, dataframe);
     }
     return 0;
 }
