@@ -16,6 +16,7 @@
     /*    PROJECT LIBS    */
     #include <errno.h>
     #include <string.h>
+    #include <math.h>
 
 typedef enum {
     BOOL,
@@ -88,14 +89,17 @@ int my_free(void *);
 /*    UTILS FUNCTIONS    */
 column_type_t get_type(const char *);
 FILE *try_to_open(const char *, const char *);
-void *free_data(dataframe_t *data);
+void *free_data(dataframe_t *);
 dataframe_t *init_data(void);
+char *type_value_to_str(unsigned int);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
 dataframe_t *df_read_csv(const char *filename, char *separator);
 int df_write_csv(dataframe_t *dataframe, const char *filename);
 dataframe_shape_t df_shape(dataframe_t *dataframe);
 dataframe_t *df_head(dataframe_t *dataframe, int nb_rows);
+void df_describe(dataframe_t *dataframe);
+void df_info(dataframe_t *dataframe);
 dataframe_t *cpy_instance(dataframe_t *dataframe);
 
 #endif

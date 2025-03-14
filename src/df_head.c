@@ -21,5 +21,6 @@ dataframe_t *df_head(dataframe_t *dataframe, int nb_rows)
     if (!data_cpy)
         return NULL;
     data_cpy->data[nb_rows] = NULL;
+    data_cpy->nb_rows = nb_rows;
     return data_cpy;
 }
