@@ -32,6 +32,7 @@ SRC	=	src/lib/split_str.c 		\
 		src/pandas/df_head.c 		\
 		src/pandas/df_info.c 		\
 		src/pandas/df_describe.c 	\
+		src/pandas/df_tail.c 		\
 		src/utils/copy_instance.c 	\
 
 # COLORS

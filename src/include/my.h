@@ -100,6 +100,7 @@ dataframe_shape_t df_shape(dataframe_t *dataframe);
 dataframe_t *df_head(dataframe_t *dataframe, int nb_rows);
 void df_describe(dataframe_t *dataframe);
 void df_info(dataframe_t *dataframe);
-dataframe_t *cpy_instance(dataframe_t *dataframe);
+dataframe_t *cpy_instance(dataframe_t *dataframe, int start_index, int size);
+dataframe_t *df_tail(dataframe_t *dataframe, int nb_rows);
 
 #endif
