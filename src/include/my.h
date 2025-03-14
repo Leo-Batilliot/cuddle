@@ -27,7 +27,7 @@ typedef enum {
     UNDEFINED
 } column_type_t;
 
-typedef struct dataframe_shape_s {
+typedef struct {
     int nb_rows;
     int nb_columns;
 } dataframe_shape_t;
