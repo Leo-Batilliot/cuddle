@@ -74,33 +74,35 @@ int is_negative_int(const char *);
 int is_float(const char *str);
 
 /*    LIB LINKED LIST    */
-void free_list(list_t *);
-list_t *create_list(void);
-void add_node(char *, int, list_t *);
-int delete_node(list_t *, const char *);
-void print_list(list_t *);
 char **list_to_array(list_t *);
 int free_node(node_t *);
+int delete_node(list_t *, const char *);
+list_t *create_list(void);
+void free_list(list_t *);
+void print_list(list_t *);
+void add_node(char *, int, list_t *);
 
 /*    OTHER LIB FUNCTIONS    */
-int mini_printf(int, const char *, ...);
 int my_free(void *);
+int mini_printf(int, const char *, ...);
 
 /*    UTILS FUNCTIONS    */
 column_type_t get_type(const char *);
+char *type_value_to_str(unsigned int);
+dataframe_t *init_data(void);
 FILE *try_to_open(const char *, const char *);
 void *free_data(dataframe_t *);
-dataframe_t *init_data(void);
-char *type_value_to_str(unsigned int value);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
-dataframe_t *df_read_csv(const char *filename, char *separator);
-int df_write_csv(dataframe_t *dataframe, const char *filename);
-dataframe_shape_t df_shape(dataframe_t *dataframe);
-dataframe_t *df_head(dataframe_t *dataframe, int nb_rows);
-void df_describe(dataframe_t *dataframe);
-void df_info(dataframe_t *dataframe);
-dataframe_t *cpy_instance(dataframe_t *dataframe, int start_index, int size);
-dataframe_t *df_tail(dataframe_t *dataframe, int nb_rows);
+dataframe_shape_t df_shape(dataframe_t *);
+dataframe_t *df_tail(dataframe_t *, int );
+dataframe_t *df_head(dataframe_t *, int );
+dataframe_t *df_read_csv(const char *, char *);
+dataframe_t *cpy_instance(dataframe_t *, int, int );
+int df_write_csv(dataframe_t *, const char *);
+void df_info(dataframe_t *);
+void df_describe(dataframe_t *);
+void *df_get_value(dataframe_t *, int, const char *);
+void **df_get_values(dataframe_t *, const char *);
 
 #endif
