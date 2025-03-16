@@ -5,6 +5,8 @@
 ## task 01
 ##
 
+## .o FILES DIRECTORY
+OBJ_DIR = obj
 # FILES
 SRC	=	src/lib/split_str.c 		\
 		src/lib/my_strlen.c 		\
@@ -44,13 +46,14 @@ BOLD=\033[1m
 RESET=\033[0m
 
 # VARIABLES
-OBJ =	$(SRC:.c=.o)
+OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 CFLAGS = -Wextra -Wall -W -Werror -I src/include -lm
 CC = ar rcs
 NAME = libcuddle.a
 
 # PRINT COMPILATION
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	@echo -e "$(GREEN)$(BOLD)[COMPILING]:\t$(RESET)$(GREEN)$<$(RESET)"
 	@gcc $(CFLAGS) -c $< -o $@
 
@@ -60,6 +63,7 @@ all: pre-compile $(NAME)
 # PRINT INFO
 pre-compile:
 	@echo -e "$(WHITE)$(BOLD)\t$(WHITE)[COMPILATION...]$(RESET)"
+	@mkdir -p $(OBJ_DIR)
 
 # COMPILATION
 $(NAME): $(OBJ)
@@ -71,12 +75,10 @@ $(NAME): $(OBJ)
 # CLEAN OBJECT FILES
 clean:
 	@echo -e "$(WHITE)$(BOLD)\t[CLEANING OBJ...]$(RESET)"
-	@for file in $(OBJ); do \
-		if [ -f "$$file" ]; then \
-			echo -e "$(RED)$(BOLD)[CLEAN]:\t$(RESET)$(RED)$$file$(RESET)"; \
-			rm -f "$$file"; \
-		fi; \
-	done
+	@if [ -d "$(OBJ_DIR)" ]; then \
+		echo -e "$(RED)$(BOLD)[CLEAN]:\t$(RESET)$(RED)$(OBJ_DIR)$(RESET)"; \
+		rm -rf $(OBJ_DIR); \
+	fi
 
 # CLEAN EXEC / LIB
 fclean:
