@@ -6,6 +6,18 @@
 */
 #include "my.h"
 
+static int cast_to_types(dataframe_t *data)
+{
+    for (int i = 0; i < data->nb_columns; i++) {
+        if (data->column_types[i] == STRING)
+            continue;
+        for (int y = 0; y < data->nb_rows; y++)
+            data->data[y][i] = convert_to_type(data->data[y][i],
+                data->column_types[i]);
+    }
+    return 0;
+}
+
 static column_type_t is_previous_type(
     column_type_t type1, column_type_t type2, int opt)
 {
@@ -47,7 +59,7 @@ static int parse_file_data(
         data->data[i] = NULL;
         if (!data->data)
             return my_free((void *) line);
-        splt = split_str(line, separator);
+        splt = correct_array(split_str(line, separator));
         if (!splt || my_array_len((const void **) splt) != data->nb_columns) {
             my_free((void *) line);
             return free_array((void **) splt);
@@ -64,49 +76,39 @@ static int parse_file(FILE *file, dataframe_t *data, const char *separator)
     char **splt = NULL;
     char *line = NULL;
     size_t size = 0;
-    int res = 0;
+    int temp = 0;
 
     if (getline(&line, &size, file) == - 1)
-        res = 84;
-    if (!res)
-        splt = split_str(line, separator);
+        temp = 84;
+    if (!temp)
+        splt = correct_array(split_str(line, separator));
     if (!splt)
-        res = 84;
+        temp = 84;
     data->column_names = splt;
-    for (; !res && data->column_names[data->nb_columns]; data->nb_columns++);
-    if (res ||
-        parse_file_data(file, data, separator) || set_types(data))
-        res = 84;
+    for (; !temp && data->column_names[data->nb_columns]; data->nb_columns++);
+    if (temp ||
+        parse_file_data(file, data, separator) || set_types(data) ||
+        cast_to_types(data))
+        temp = 84;
     free(line);
-    return res;
-}
-
-static dataframe_t *df_read_main(dataframe_t *data, FILE *fd, char *separator)
-{
-    if (parse_file(fd, data, separator) == 84)
-        data = free_data(data);
-    fclose(fd);
-    free(separator);
-    return data;
+    return temp;
 }
 
 dataframe_t *df_read_csv(const char *filename, char *separator)
 {
     dataframe_t *data = init_data();
     FILE *fd;
-    char *sep = NULL;
 
     if (!data)
         return NULL;
     if (!separator)
         separator = ",";
+    data->separator = separator;
     fd = try_to_open(filename, "r");
     if (!fd)
         return free_data(data);
-    sep = my_strcat(separator, NULL, " \n");
-    if (!sep) {
-        fclose(fd);
-        return free_data(data);
-    }
-    return df_read_main(data, fd, sep);
+    if (parse_file(fd, data, separator) == 84)
+        data = free_data(data);
+    fclose(fd);
+    return data;
 }
