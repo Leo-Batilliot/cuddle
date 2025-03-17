@@ -7,11 +7,9 @@
 
 #include "my.h"
 
-static int cpy_top_struct(dataframe_t *data_cpy,
-    dataframe_t *dataframe, int size)
+static int cpy_names(dataframe_t *data_cpy,
+    dataframe_t *dataframe)
 {
-    data_cpy->nb_columns = dataframe->nb_columns;
-    data_cpy->nb_rows = size;
     data_cpy->column_names = malloc(sizeof(char *) *
         (data_cpy->nb_columns + 1));
     if (!data_cpy->column_names)
@@ -23,68 +21,90 @@ static int cpy_top_struct(dataframe_t *data_cpy,
             return -1;
     }
     data_cpy->column_names[dataframe->nb_columns] = NULL;
-    data_cpy->column_types = malloc(sizeof(int) * data_cpy->nb_columns);
-    data_cpy->data = malloc(sizeof(void **) * (size + 1));
-    if (!data_cpy->data || !data_cpy->column_types)
+    data_cpy->data = malloc(sizeof(void **) * (data_cpy->nb_rows + 1));
+    if (!data_cpy->data)
         return -1;
+    data_cpy->strings = malloc(sizeof(char **) * (data_cpy->nb_rows + 1));
+    if (!data_cpy->strings)
+        return -1;
+    data_cpy->data[data_cpy->nb_rows] = NULL;
+    data_cpy->strings[data_cpy->nb_rows] = NULL;
     return 0;
 }
 
-static void update_type(int k, dataframe_t *dataframe, dataframe_t *data_cpy)
+static int fill_data(dataframe_t *dataframe,
+    int src_index, dataframe_t *data_cpy, int dest_index)
 {
-    if (dataframe->column_types[k] == INT)
-        data_cpy->column_types[k] = INT;
-    if (dataframe->column_types[k] == UINT)
-        data_cpy->column_types[k] = UINT;
-    if (dataframe->column_types[k] == BOOL)
-        data_cpy->column_types[k] = BOOL;
-    if (dataframe->column_types[k] == FLOAT)
-        data_cpy->column_types[k] = FLOAT;
-    if (dataframe->column_types[k] == STRING)
-        data_cpy->column_types[k] = STRING;
-}
-
-static int fill_data(dataframe_t *dataframe, int i, dataframe_t *data_cpy,
-    int cpy_index)
-{
-    size_t size = 0;
-
-    for (int k = 0; k < dataframe->nb_columns && dataframe->data[i][k]; k++) {
-        update_type(k, dataframe, data_cpy);
-        size = strlen((char *)dataframe->data[i][k]) + 1;
-        data_cpy->data[cpy_index][k] = malloc(size);
-        if (!data_cpy->data[cpy_index][k])
+    for (int y = 0; y < data_cpy->nb_columns &&
+        dataframe->data[src_index][y]; y++) {
+        data_cpy->data[dest_index][y] = convert_to_type((void *) my_strdup(
+            dataframe->strings[src_index][y]), dataframe->column_types[y]);
+        if (!data_cpy->data[dest_index][y])
             return -1;
-        memcpy(data_cpy->data[cpy_index][k], dataframe->data[i][k], size);
+        data_cpy->strings[dest_index][y] =
+            strdup(dataframe->strings[src_index][y]);
+        if (!data_cpy->strings[dest_index][y])
+            return -1;
     }
     return 0;
 }
 
 static int cpy_data(dataframe_t *dataframe, dataframe_t *data_cpy,
-    int index)
+    int cpy_index)
 {
-    for (int i = 0; i < data_cpy->nb_rows && dataframe->data[i]; index++) {
-        data_cpy->data[i] = malloc(sizeof(void *) *
-            data_cpy->nb_columns);
+    for (int i = 0; cpy_index < dataframe->nb_rows && i < data_cpy->nb_rows &&
+        dataframe->data[i]; cpy_index++) {
+        data_cpy->data[i] =
+            malloc(sizeof(void *) * (data_cpy->nb_columns + 1));
         if (!data_cpy->data[i])
             return -1;
-        if (fill_data(dataframe, index, data_cpy, i) == -1)
+        data_cpy->strings[i] =
+            malloc(sizeof(char *) * (data_cpy->nb_columns + 1));
+        if (!data_cpy->strings[i])
+            return -1;
+        data_cpy->data[i][data_cpy->nb_columns] = NULL;
+        data_cpy->strings[i][data_cpy->nb_columns] = NULL;
+        if (fill_data(dataframe, cpy_index, data_cpy, i) == -1)
             return -1;
         i++;
     }
-    data_cpy->data[data_cpy->nb_rows] = NULL;
     return 0;
+}
+
+static dataframe_t *init_data_cpy(int col, int row, dataframe_t *dataframe)
+{
+    dataframe_t *data = malloc(sizeof(dataframe_t));
+
+    if (!data)
+        return NULL;
+    data->nb_rows = row;
+    data->nb_columns = col;
+    data->column_names = NULL;
+    data->strings = NULL;
+    data->data = NULL;
+    data->separator = dataframe->separator;
+    data->column_types = malloc(sizeof(column_type_t) * data->nb_columns);
+    if (!data->column_types) {
+        free(data);
+        return NULL;
+    }
+    for (int i = 0; i < data->nb_columns; i++)
+        data->column_types[i] = dataframe->column_types[i];
+    return data;
 }
 
 dataframe_t *cpy_instance(dataframe_t *dataframe, int start_index, int size)
 {
-    dataframe_t *data_cpy = malloc(sizeof(dataframe_t));
+    dataframe_t *data_cpy;
 
-    if (!dataframe || !data_cpy)
+    if (!dataframe)
         return NULL;
-    if (cpy_top_struct(data_cpy, dataframe, size) == -1)
+    data_cpy = init_data_cpy(dataframe->nb_columns, size, dataframe);
+    if (!data_cpy)
         return NULL;
+    if (cpy_names(data_cpy, dataframe) == -1)
+        return free_data(data_cpy);
     if (cpy_data(dataframe, data_cpy, start_index) == -1)
-        return NULL;
+        return free_data(data_cpy);
     return data_cpy;
 }

@@ -15,7 +15,7 @@ dataframe_t *df_tail(dataframe_t *dataframe, int nb_rows)
         return NULL;
     cpy_data = cpy_instance(dataframe,
                 dataframe->nb_rows - nb_rows,
-                dataframe->nb_rows - (dataframe->nb_rows - nb_rows));
+                nb_rows);
     if (!cpy_data)
         return NULL;
     return cpy_data;

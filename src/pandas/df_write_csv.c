@@ -6,10 +6,10 @@
 */
 #include "my.h"
 
-void print_value(FILE *fd, void *value, column_type_t type)
+void print_value(FILE *fd, void *value, column_type_t type, char *str)
 {
-    if (type == BOOL || type == STRING) {
-        fprintf(fd, "%s", (char *) value);
+    if (type == BOOL || type == STRING || type == FLOAT) {
+        fprintf(fd, "%s", str);
         return;
     }
     if (type == INT) {
@@ -20,19 +20,16 @@ void print_value(FILE *fd, void *value, column_type_t type)
         fprintf(fd, "%u", *(unsigned int *) value);
         return;
     }
-    if (type == FLOAT) {
-        fprintf(fd, "%f", *(float *) value);
-        return;
-    }
 }
 
-static int gest_inside(int i, FILE *fd, dataframe_t *dataframe)
+static int print_values(int i, FILE *fd, dataframe_t *dataframe)
 {
     for (int k = 0; k < dataframe->nb_columns
         && dataframe->data[i][k]; k++) {
         if (!dataframe->data[i][k])
             return 84;
-        print_value(fd, dataframe->data[i][k], dataframe->column_types[k]);
+        print_value(fd, dataframe->data[i][k], dataframe->column_types[k],
+            dataframe->strings[i][k]);
         if (k + 1 < dataframe->nb_columns)
             fprintf(fd, "%s", dataframe->separator);
     }
@@ -51,7 +48,7 @@ static int print_file(dataframe_t *dataframe, FILE *fd)
     if (dataframe->data)
         fprintf(fd, "\n");
     for (int i = 0; i < dataframe->nb_rows && dataframe->data[i]; i++) {
-        if (!dataframe->data[i] || gest_inside(i, fd, dataframe))
+        if (!dataframe->data[i] || print_values(i, fd, dataframe))
             return 84;
         if (i + 1 < dataframe->nb_rows)
             fprintf(fd, "\n");
