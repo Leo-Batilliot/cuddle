@@ -39,6 +39,7 @@ SRC	=	src/lib/split_str.c 		\
 		src/pandas/df_describe.c 	\
 		src/pandas/df_tail.c 		\
 		src/pandas/df_get_value.c 	\
+		src/pandas/df_apply.c 		\
 
 # COLORS
 RED=\033[31m
