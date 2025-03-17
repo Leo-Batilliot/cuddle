@@ -15,14 +15,14 @@ static void *convert_to_other_types(char *str, column_type_t type)
         unint = malloc(sizeof(unsigned int));
         if (!unint)
             return NULL;
-        *unint = (unsigned int)strtoul(str, NULL, 10);
+        *unint = (unsigned int) atol(str);
         return unint;
     }
     if (type == FLOAT) {
         flt = malloc(sizeof(float));
         if (!flt)
             return NULL;
-        *flt = strtof(str, NULL);
+        *flt = atof(str);
         return flt;
     }
     return strdup(str);

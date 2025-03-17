@@ -27,15 +27,13 @@ int is_bool(const char *str)
 
 int get_sign(const char *str, int *index)
 {
-    int res = 1;
-
     if (!str)
         return 0;
-    for (; str[*index] != '\0' &&
-        (str[*index] == '-' || str[*index] == '+'); (*index)++)
-        if (str[*index] == '-')
-            res = - res;
-    return res;
+    if (str[0] == '-') {
+        *index = 1;
+        return - 1;
+    }
+    return 1;
 }
 
 int is_unsigned_int(const char *str)
@@ -44,7 +42,7 @@ int is_unsigned_int(const char *str)
     int sign = get_sign(str, &index);
     long res = 0;
 
-    if (sign != 1 || str[index] == '\0')
+    if (sign != 1 || str[index] >= '9' || str[index] <= '0')
         return 0;
     for (; str[index] != '\0'; index++) {
         if (str[index] < '0' || str[index] > '9')
@@ -64,7 +62,7 @@ int is_negative_int(const char *str)
     int sign = get_sign(str, &index);
     long res = 0;
 
-    if (sign != - 1 || str[index] == '\0')
+    if (sign != - 1 || str[index] >= '9' || str[index] <= '0')
         return 0;
     for (; str[index] != '\0'; index++) {
         if (str[index] < '0' || str[index] > '9')
@@ -104,7 +102,7 @@ int is_float(const char *str)
     double res = 0;
     int count = 0;
 
-    if (sign == 0 || str[index] == '\0')
+    if (sign == 0 || str[index] >= '9' || str[index] <= '0')
         return 0;
     for (; str[index] != '\0' && str[index] != '.'; index++) {
         res = res * 10 + (str[index] - '0');

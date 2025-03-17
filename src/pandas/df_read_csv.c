@@ -18,16 +18,21 @@ static int cast_to_types(dataframe_t *data)
     return 0;
 }
 
-static column_type_t is_previous_type(
-    column_type_t type1, column_type_t type2, int opt)
+static int set_strings(dataframe_t *data)
 {
-    if (!opt)
-        return type2;
-    if ((type1 == INT && type2 == UINT) || (type1 == UINT && type2 == INT))
-        return INT;
-    if (type1 != type2)
-        return STRING;
-    return type2;
+    data->strings = malloc(sizeof(char **) * (data->nb_rows + 1));
+    if (!data->strings)
+        return 84;
+    for (int i = 0; i < data->nb_rows; i++) {
+        data->strings[i + 1] = NULL;
+        data->strings[i] = malloc(sizeof(char *) * (data->nb_columns + 1));
+        if (!data->strings[i])
+            return 84;
+        data->strings[i][data->nb_columns] = NULL;
+        for (int y = 0; data->data[i][y]; y++)
+            data->strings[i][y] = my_strdup((char *) data->data[i][y]);
+    }
+    return 0;
 }
 
 static int set_types(dataframe_t *data)
@@ -88,7 +93,7 @@ static int parse_file(FILE *file, dataframe_t *data, const char *separator)
     for (; !temp && data->column_names[data->nb_columns]; data->nb_columns++);
     if (temp ||
         parse_file_data(file, data, separator) || set_types(data) ||
-        cast_to_types(data))
+        set_strings(data) || cast_to_types(data))
         temp = 84;
     free(line);
     return temp;

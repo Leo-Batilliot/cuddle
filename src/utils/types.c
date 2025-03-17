@@ -20,3 +20,15 @@ column_type_t get_type(const char *str)
         return FLOAT;
     return STRING;
 }
+
+column_type_t is_previous_type(
+    column_type_t type1, column_type_t type2, int opt)
+{
+    if (!opt)
+        return type2;
+    if ((type1 == INT && type2 == UINT) || (type1 == UINT && type2 == INT))
+        return INT;
+    if (type1 != type2)
+        return STRING;
+    return type2;
+}

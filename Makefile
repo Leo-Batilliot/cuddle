@@ -97,4 +97,4 @@ re: fclean all
 
 test: $(OBJ)
 	@$(MAKE) re -s
-	@gcc -o test tests/main.c $(CFLAGS) -L. -lcuddle
+	@gcc -o test tests/main.c $(CFLAGS) -L. -lcuddle -lm

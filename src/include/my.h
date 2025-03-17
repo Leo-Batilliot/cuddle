@@ -38,6 +38,7 @@ typedef struct {
     char **column_names;
     column_type_t *column_types;
     void ***data;
+    char ***strings;
     char *separator;
 } dataframe_t;
 
@@ -95,7 +96,8 @@ FILE *try_to_open(const char *, const char *);
 void *free_data(dataframe_t *);
 char **correct_array(char **);
 void *convert_to_type(void *, column_type_t);
-void print_value(FILE *, void *, column_type_t);
+void print_value(FILE *, void *, column_type_t, char *);
+column_type_t is_previous_type(column_type_t, column_type_t, int);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
 dataframe_shape_t df_shape(dataframe_t *);
