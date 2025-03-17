@@ -106,6 +106,7 @@ dataframe_t *df_head(dataframe_t *, int);
 dataframe_t *df_read_csv(const char *, char *);
 dataframe_t *cpy_instance(dataframe_t *, int, int);
 int df_write_csv(dataframe_t *, const char *);
+dataframe_t *df_apply(dataframe_t *, const char *, void *(*)(void *));
 void df_info(dataframe_t *);
 void df_describe(dataframe_t *);
 void *df_get_value(dataframe_t *, int, const char *);
