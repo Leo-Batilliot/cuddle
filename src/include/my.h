@@ -38,6 +38,7 @@ typedef struct {
     char **column_names;
     column_type_t *column_types;
     void ***data;
+    char *separator;
 } dataframe_t;
 
 typedef struct node {
@@ -92,13 +93,16 @@ char *type_value_to_str(unsigned int);
 dataframe_t *init_data(void);
 FILE *try_to_open(const char *, const char *);
 void *free_data(dataframe_t *);
+char **correct_array(char **);
+void *convert_to_type(void *, column_type_t);
+void print_value(FILE *, void *, column_type_t);
 
 /*    PROJECT'S MAIN FUNCTIONS    */
 dataframe_shape_t df_shape(dataframe_t *);
-dataframe_t *df_tail(dataframe_t *, int );
-dataframe_t *df_head(dataframe_t *, int );
+dataframe_t *df_tail(dataframe_t *, int);
+dataframe_t *df_head(dataframe_t *, int);
 dataframe_t *df_read_csv(const char *, char *);
-dataframe_t *cpy_instance(dataframe_t *, int, int );
+dataframe_t *cpy_instance(dataframe_t *, int, int);
 int df_write_csv(dataframe_t *, const char *);
 void df_info(dataframe_t *);
 void df_describe(dataframe_t *);

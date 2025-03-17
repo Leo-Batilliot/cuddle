@@ -4,13 +4,26 @@
 ** File description:
 ** df_write_csv
 */
-
 #include "my.h"
 
-static void print_comma(int i, FILE *fd, dataframe_t *dataframe)
+void print_value(FILE *fd, void *value, column_type_t type)
 {
-    if (i < dataframe->nb_columns - 1)
-        fprintf(fd, ",");
+    if (type == BOOL || type == STRING) {
+        fprintf(fd, "%s", (char *) value);
+        return;
+    }
+    if (type == INT) {
+        fprintf(fd, "%d", *(int *) value);
+        return;
+    }
+    if (type == UINT) {
+        fprintf(fd, "%u", *(unsigned int *) value);
+        return;
+    }
+    if (type == FLOAT) {
+        fprintf(fd, "%f", *(float *) value);
+        return;
+    }
 }
 
 static int gest_inside(int i, FILE *fd, dataframe_t *dataframe)
@@ -19,8 +32,9 @@ static int gest_inside(int i, FILE *fd, dataframe_t *dataframe)
         && dataframe->data[i][k]; k++) {
         if (!dataframe->data[i][k])
             return 84;
-        fprintf(fd, "%s", (char *)dataframe->data[i][k]);
-        print_comma(k, fd, dataframe);
+        print_value(fd, dataframe->data[i][k], dataframe->column_types[k]);
+        if (k + 1 < dataframe->nb_columns)
+            fprintf(fd, "%s", dataframe->separator);
     }
     return 0;
 }
@@ -31,55 +45,31 @@ static int print_file(dataframe_t *dataframe, FILE *fd)
         if (!dataframe->column_names[i])
             return 84;
         fprintf(fd, "%s", dataframe->column_names[i]);
-        print_comma(i, fd, dataframe);
+        if (i + 1 < dataframe->nb_columns)
+            fprintf(fd, "%s", dataframe->separator);
     }
-    fprintf(fd, "\n");
-    for (int i = 0; i < dataframe->nb_rows && dataframe->data[i]; i++) {
-        if (!dataframe->data[i])
-            return 84;
-        if (gest_inside(i, fd, dataframe) == 84)
-            return 84;
+    if (dataframe->data)
         fprintf(fd, "\n");
+    for (int i = 0; i < dataframe->nb_rows && dataframe->data[i]; i++) {
+        if (!dataframe->data[i] || gest_inside(i, fd, dataframe))
+            return 84;
+        if (i + 1 < dataframe->nb_rows)
+            fprintf(fd, "\n");
     }
     return 0;
-}
-
-static FILE *gest_file(const char *filename, dataframe_t *dataframe)
-{
-    FILE *fd = NULL;
-    const char *check_csv = NULL;
-
-    if (!filename) {
-        mini_printf(2, "Error with : %s.\n", filename);
-        return NULL;
-    }
-    if (!dataframe)
-        return NULL;
-    check_csv = filename + strlen(filename) - 3;
-    if (!check_csv || my_strcmp(check_csv, "csv")) {
-        mini_printf(2, "The format of filename must be finish by [.csv]\n");
-        return NULL;
-    }
-    fd = try_to_open(filename, "w");
-    if (!fd)
-        return NULL;
-    return fd;
 }
 
 int df_write_csv(dataframe_t *dataframe, const char *filename)
 {
-    FILE *fd = gest_file(filename, dataframe);
+    FILE *fd = NULL;
+    int res = 0;
 
+    if (!filename || !dataframe || dataframe->nb_columns <= 0)
+        return 84;
+    fd = try_to_open(filename, "w");
     if (!fd)
         return 84;
-    if (dataframe->nb_columns <= 0) {
-        fclose(fd);
-        return 84;
-    }
-    if (print_file(dataframe, fd) == 84) {
-        fclose(fd);
-        return 84;
-    }
+    res = print_file(dataframe, fd);
     fclose(fd);
-    return 0;
+    return res;
 }

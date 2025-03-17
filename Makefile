@@ -25,9 +25,12 @@ SRC	=	src/lib/split_str.c 		\
 		src/lib/my_get_nbr.c 		\
 		src/lib/types.c 			\
 		src/lib/str_lowcase.c 		\
-		src/utils/str_type.c 		\
+		src/utils/types.c 	 		\
 		src/utils/data_struct.c 	\
 		src/utils/open_file.c 		\
+		src/utils/trim_array.c 		\
+		src/utils/copy_instance.c 	\
+		src/utils/convert.c 		\
 		src/pandas/df_read_csv.c 	\
 		src/pandas/df_write_csv.c 	\
 		src/pandas/df_shape.c 		\
@@ -36,7 +39,6 @@ SRC	=	src/lib/split_str.c 		\
 		src/pandas/df_describe.c 	\
 		src/pandas/df_tail.c 		\
 		src/pandas/df_get_value.c 	\
-		src/utils/copy_instance.c 	\
 
 # COLORS
 RED=\033[31m
@@ -91,5 +93,8 @@ fclean:
 # CLEAN EVERYTHING AND RE-COMPILE
 re: fclean all
 
+.PHONY: test
+
 test: $(OBJ)
-	@gcc -o test tests/main.c $(OBJ) $(CFLAGS)
+	@$(MAKE) re -s
+	@gcc -o test tests/main.c $(CFLAGS) -L. -lcuddle
