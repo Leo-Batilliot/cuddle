@@ -53,7 +53,7 @@ RESET=\033[0m
 
 # VARIABLES
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
-CFLAGS = -Wextra -Wall -W -Werror -I src/include -lm -g
+CFLAGS = -Wextra -Wall -W -Werror -I include -lm
 CC = ar rcs
 NAME = libcuddle.a
 
