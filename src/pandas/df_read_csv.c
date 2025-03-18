@@ -112,10 +112,12 @@ dataframe_t *df_read_csv(const char *filename, char *separator)
         separator = ",";
     data->separator = separator;
     fd = try_to_open(filename, "r");
-    if (!fd)
-        return free_data(data);
+    if (!fd) {
+        df_free(data);
+        return NULL;
+    }
     if (parse_file(fd, data, separator) == 84)
-        data = free_data(data);
+        df_free(data);
     fclose(fd);
     return data;
 }

@@ -102,9 +102,13 @@ dataframe_t *cpy_instance(dataframe_t *dataframe, int start_index, int size)
     data_cpy = init_data_cpy(dataframe->nb_columns, size, dataframe);
     if (!data_cpy)
         return NULL;
-    if (cpy_names(data_cpy, dataframe) == -1)
-        return free_data(data_cpy);
-    if (cpy_data(dataframe, data_cpy, start_index) == -1)
-        return free_data(data_cpy);
+    if (cpy_names(data_cpy, dataframe) == -1) {
+        df_free(data_cpy);
+        return NULL;
+    }
+    if (cpy_data(dataframe, data_cpy, start_index) == -1) {
+        df_free(dataframe);
+        return NULL;
+    }
     return data_cpy;
 }

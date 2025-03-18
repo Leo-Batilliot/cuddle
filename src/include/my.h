@@ -93,7 +93,6 @@ column_type_t get_type(const char *);
 char *type_value_to_str(unsigned int);
 dataframe_t *init_data(void);
 FILE *try_to_open(const char *, const char *);
-void *free_data(dataframe_t *);
 char *correct_and_dup(char *str, column_type_t type);
 void *convert_to_type(void *, column_type_t);
 void print_value(FILE *, void *, column_type_t, char *);
@@ -111,5 +110,6 @@ void df_info(dataframe_t *);
 void df_describe(dataframe_t *);
 void *df_get_value(dataframe_t *, int, const char *);
 void **df_get_values(dataframe_t *, const char *);
+void df_free(dataframe_t *);
 
 #endif
