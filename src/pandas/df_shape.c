@@ -5,7 +5,7 @@
 ** df_shape
 */
 
-#include "my.h"
+#include "dataframe.h"
 
 dataframe_shape_t df_shape(dataframe_t *dataframe)
 {
