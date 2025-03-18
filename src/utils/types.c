@@ -10,14 +10,18 @@ column_type_t get_type(const char *str)
 {
     if (!str)
         return UNDEFINED;
-    if (is_bool(str))
+    if (is_bool(str)) {
         return BOOL;
-    if (is_negative_int(str))
+    }
+    if (is_negative_int(str)) {
         return INT;
-    if (is_unsigned_int(str))
+    }
+    if (is_unsigned_int(str)) {
         return UINT;
-    if (is_float(str))
+    }
+    if (is_float(str)) {
         return FLOAT;
+    }
     return STRING;
 }
 
