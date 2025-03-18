@@ -38,10 +38,11 @@ SRC	=	src/lib/split_str.c 		\
 		src/pandas/df_info.c 		\
 		src/pandas/df_describe.c 	\
 		src/pandas/df_tail.c 		\
-		src/pandas/df_get_value.c 	\
-		src/pandas/df_apply.c 		\
+		src/pandas/df_get_value.c 			\
+		src/pandas/df_apply.c 				\
 		src/pandas/df_get_unique_values.c 	\
-		src/pandas/df_free.c 		\
+		src/pandas/df_free.c 				\
+		src/pandas/df_filter.c 				\
 
 # COLORS
 RED=\033[31m
@@ -52,7 +53,7 @@ RESET=\033[0m
 
 # VARIABLES
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
-CFLAGS = -Wextra -Wall -W -Werror -I src/include -lm
+CFLAGS = -Wextra -Wall -W -Werror -I src/include -lm -g
 CC = ar rcs
 NAME = libcuddle.a
 

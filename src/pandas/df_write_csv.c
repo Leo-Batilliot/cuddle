@@ -65,6 +65,8 @@ int df_write_csv(dataframe_t *dataframe, const char *filename)
     fd = try_to_open(filename, "w");
     if (!fd)
         return 84;
+    if (!dataframe->data)
+        return 84;
     res = print_file(dataframe, fd);
     fclose(fd);
     return res;

@@ -69,8 +69,8 @@ static int gest_count(int *count, dataframe_t
             return 1;
     }
     if (!is_dupli) {
-            (*to_return)[*count] = dataframe->data[dataframe->k][i];
-            (*count)++;
+        (*to_return)[*count] = dataframe->data[dataframe->k][i];
+        (*count)++;
     }
     return 0;
 }

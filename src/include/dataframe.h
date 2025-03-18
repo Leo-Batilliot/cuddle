@@ -14,6 +14,7 @@
     #include <unistd.h>
     #include <stdarg.h>
     /*    PROJECT LIBS    */
+    #include <stdbool.h>
     #include <errno.h>
     #include <string.h>
     #include <math.h>
@@ -105,6 +106,7 @@ dataframe_t *df_tail(dataframe_t *, int);
 dataframe_t *df_head(dataframe_t *, int);
 dataframe_t *df_read_csv(const char *, char *);
 dataframe_t *cpy_instance(dataframe_t *, int, int);
+dataframe_t *df_filter(dataframe_t *, const char *, bool (*)(void *));
 int df_write_csv(dataframe_t *, const char *);
 dataframe_t *df_apply(dataframe_t *, const char *, void *(*)(void *));
 void df_info(dataframe_t *);
