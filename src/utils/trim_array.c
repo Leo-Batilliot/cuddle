@@ -6,21 +6,14 @@
 */
 #include "dataframe.h"
 
-char **correct_array(char **array)
+char *correct_and_dup(char *str, column_type_t type)
 {
-    char *temp = NULL;
-    int y = 0;
+    int i = 0;
 
-    if (!array)
-        return NULL;
-    for (int i = 0; array[i]; i++) {
-        for (y = 0; array[i][y] == ' ' || array[i][y] == '\t'; y++);
-        temp = my_strdup(array[i] + y);
-        free(array[i]);
-        array[i] = temp;
-        for (y = my_strlen(array[i]) - 1; y >= 0 && (array[i][y] == ' '
-            || array[i][y] == '\t' || array[i][y] == '\n'); y--)
-            array[i][y] = '\0';
-    }
-    return array;
+    if (type == STRING || type == BOOL)
+        return my_strdup(str);
+    for (; str[i] == ' ' || str[i] == '\t' || str[i] == '\n'; i++);
+    for (; str[my_strlen(str) - 1] == '\t' || str[my_strlen(str) - 1] == '\n'
+        || str[my_strlen(str) - 1] == ' '; str[my_strlen(str) - 1] = '\0');
+    return my_strdup(&(str[i]));
 }

@@ -8,6 +8,14 @@
 #include <float.h>
 #include <limits.h>
 
+static int not_only_spaces(const char *str, int index)
+{
+    for (; str[index] != '\0'; index++)
+        if (str[index] != ' ' || str[index] != '\t' || str[index] != '\n')
+            return 1;
+    return 0;
+}
+
 int is_bool(const char *str)
 {
     char *buffer;
@@ -29,8 +37,10 @@ int get_sign(const char *str, int *index)
 {
     if (!str)
         return 0;
+    for (; str[*index] == ' ' || str[*index] == '\t' ||
+        str[*index] == '\n'; *index += 1);
     if (str[0] == '-') {
-        *index = 1;
+        *index += 1;
         return - 1;
     }
     return 1;
@@ -42,16 +52,16 @@ int is_unsigned_int(const char *str)
     int sign = get_sign(str, &index);
     long res = 0;
 
-    if (sign != 1 || str[index] >= '9' || str[index] <= '0')
+    if (sign != 1 || str[index] > '9' || str[index] < '0')
         return 0;
     for (; str[index] != '\0'; index++) {
         if (str[index] < '0' || str[index] > '9')
-            return 0;
+            break;
         res = res * 10 + (str[index] - '0');
         if (res > UINT_MAX)
             return 0;
     }
-    if (res >= 0 && res <= UINT_MAX)
+    if (!not_only_spaces(str, index) && res >= 0 && res <= UINT_MAX)
         return 1;
     return 0;
 }
@@ -62,7 +72,7 @@ int is_negative_int(const char *str)
     int sign = get_sign(str, &index);
     long res = 0;
 
-    if (sign != - 1 || str[index] >= '9' || str[index] <= '0')
+    if (sign != - 1 || str[index] > '9' || str[index] < '0')
         return 0;
     for (; str[index] != '\0'; index++) {
         if (str[index] < '0' || str[index] > '9')
@@ -72,21 +82,21 @@ int is_negative_int(const char *str)
             return 0;
     }
     res *= sign;
-    if (res < 0 && res >= INT_MIN)
+    if (!not_only_spaces(str, index) && res < 0 && res >= INT_MIN)
         return 1;
     return 0;
 }
 
 static int valid_decimal_part(
-    const char *str, int index, int count)
+    const char *str, int *index, int count)
 {
-    if (str[index] != '.')
+    if (str[*index] != '.')
         return 0;
-    index++;
-    if (str[index] == '\0')
+    (*index) += 1;
+    if (str[*index] == '\0')
         return 0;
-    for (; str[index] != '\0'; index++) {
-        if (str[index] > '9' || str[index] < '0')
+    for (; str[*index] != '\0'; *index += 1) {
+        if (str[*index] > '9' || str[*index] < '0')
             return 0;
         count++;
     }
@@ -102,7 +112,7 @@ int is_float(const char *str)
     double res = 0;
     int count = 0;
 
-    if (sign == 0 || str[index] >= '9' || str[index] <= '0')
+    if (sign == 0 || str[index] > '9' || str[index] < '0')
         return 0;
     for (; str[index] != '\0' && str[index] != '.'; index++) {
         res = res * 10 + (str[index] - '0');
@@ -110,5 +120,8 @@ int is_float(const char *str)
         if (res > FLT_MAX)
             return 0;
     }
-    return (count && valid_decimal_part(str, index, count));
+    sign = valid_decimal_part(str, &index, count) && count;
+    if (sign && !not_only_spaces(str, index))
+        return 1;
+    return 0;
 }

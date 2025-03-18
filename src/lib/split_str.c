@@ -81,5 +81,10 @@ char **split_str(const char *str, const char *delim)
     if (!res)
         return NULL;
     res[words] = NULL;
-    return words_to_array(res, str, delim);
+    res = words_to_array(res, str, delim);
+    if (res[my_array_len((const void **) res) - 1][my_strlen(res[my_array_len((
+        const void **) res) - 1]) - 1] == '\n')
+        res[my_array_len((const void **) res) - 1][my_strlen(res[my_array_len((
+            const void **) res) - 1]) - 1] = '\0';
+    return res;
 }

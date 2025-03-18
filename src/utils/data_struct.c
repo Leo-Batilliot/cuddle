@@ -20,34 +20,3 @@ dataframe_t *init_data(void)
     data->data = NULL;
     return data;
 }
-
-void free_data_two(dataframe_t *data)
-{
-    if (data->strings) {
-        for (int i = 0; i < data->nb_rows && data->strings[i]; i++)
-            free_array((void **) data->strings[i]);
-        free(data->strings);
-    }
-}
-
-void *free_data(dataframe_t *data)
-{
-    if (!data)
-        return NULL;
-    if (data->column_names) {
-        for (int i = 0; data->column_names[i]; i++)
-            free(data->column_names[i]);
-        free(data->column_names);
-    }
-    if (data->column_types)
-        free(data->column_types);
-    if (data->data) {
-        for (int i = 0; i < data->nb_rows && data->data[i]; i++)
-            free_array(data->data[i]);
-        free(data->data);
-    }
-    free_data_two(data);
-    free(data);
-    data = NULL;
-    return NULL;
-}

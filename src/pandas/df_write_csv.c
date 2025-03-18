@@ -50,8 +50,7 @@ static int print_file(dataframe_t *dataframe, FILE *fd)
     for (int i = 0; i < dataframe->nb_rows && dataframe->data[i]; i++) {
         if (!dataframe->data[i] || print_values(i, fd, dataframe))
             return 84;
-        if (i + 1 < dataframe->nb_rows)
-            fprintf(fd, "\n");
+        fprintf(fd, "\n");
     }
     return 0;
 }
