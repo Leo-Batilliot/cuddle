@@ -94,7 +94,7 @@ char *type_value_to_str(unsigned int);
 dataframe_t *init_data(void);
 FILE *try_to_open(const char *, const char *);
 void *free_data(dataframe_t *);
-char **correct_array(char **);
+char *correct_and_dup(char *str, column_type_t type);
 void *convert_to_type(void *, column_type_t);
 void print_value(FILE *, void *, column_type_t, char *);
 column_type_t is_previous_type(column_type_t, column_type_t, int);

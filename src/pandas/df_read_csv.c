@@ -29,9 +29,11 @@ static int set_strings(dataframe_t *data)
         if (!data->strings[i])
             return 84;
         data->strings[i][data->nb_columns] = NULL;
-        for (int y = 0; data->data[i][y]; y++)
-            data->strings[i][y] = my_strdup((char *) data->data[i][y]);
     }
+    for (int i = 0; i < data->nb_columns; i++)
+        for (int y = 0; y < data->nb_rows; y++)
+            data->strings[y][i] = correct_and_dup((char *)
+                data->data[y][i], data->column_types[i]);
     return 0;
 }
 
@@ -64,7 +66,7 @@ static int parse_file_data(
         data->data[i] = NULL;
         if (!data->data)
             return my_free((void *) line);
-        splt = correct_array(split_str(line, separator));
+        splt = split_str(line, separator);
         if (!splt || my_array_len((const void **) splt) != data->nb_columns) {
             my_free((void *) line);
             return free_array((void **) splt);
@@ -86,7 +88,7 @@ static int parse_file(FILE *file, dataframe_t *data, const char *separator)
     if (getline(&line, &size, file) == - 1)
         temp = 84;
     if (!temp)
-        splt = correct_array(split_str(line, separator));
+        splt = (split_str(line, separator));
     if (!splt)
         temp = 84;
     data->column_names = splt;
