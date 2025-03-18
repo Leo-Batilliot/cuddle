@@ -4,7 +4,7 @@
 ** File description:
 ** trim_array
 */
-#include "my.h"
+#include "dataframe.h"
 
 char **correct_array(char **array)
 {

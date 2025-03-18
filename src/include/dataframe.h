@@ -33,6 +33,7 @@ typedef struct {
 } dataframe_shape_t;
 
 typedef struct {
+    int k;
     int nb_rows;
     int nb_columns;
     char **column_names;
@@ -111,5 +112,6 @@ void df_info(dataframe_t *);
 void df_describe(dataframe_t *);
 void *df_get_value(dataframe_t *, int, const char *);
 void **df_get_values(dataframe_t *, const char *);
+void **df_get_unique_values(dataframe_t *, const char *);
 
 #endif

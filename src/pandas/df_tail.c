@@ -5,7 +5,7 @@
 ** df_tail
 */
 
-#include "my.h"
+#include "dataframe.h"
 
 dataframe_t *df_tail(dataframe_t *dataframe, int nb_rows)
 {

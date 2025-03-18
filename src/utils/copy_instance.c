@@ -5,7 +5,7 @@
 ** copy_instance
 */
 
-#include "my.h"
+#include "dataframe.h"
 
 static int cpy_names(dataframe_t *data_cpy,
     dataframe_t *dataframe)
