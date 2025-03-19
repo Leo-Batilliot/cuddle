@@ -39,7 +39,7 @@ static int update_int(int i[3], dataframe_t **cpy_filter,
         (*cpy_filter)->data[i[2] - 1][i[1]] = malloc(sizeof(unsigned int));
         if (!(*cpy_filter)->data[i[2] - 1][i[1]])
             return -1;
-        *(float *)(*cpy_filter)->data[i[2] - 1][i[1]] =
+        *(unsigned int *)(*cpy_filter)->data[i[2] - 1][i[1]] =
         *(unsigned int *)dataframe->data[i[0]][i[1]];
     }
     return 0;
@@ -124,8 +124,7 @@ dataframe_t *df_filter(dataframe_t *dataframe,
     if (!cpy_filter)
         return NULL;
     free_data_strings(&cpy_filter);
-    for (int i = 0; i < dataframe->nb_rows
-        && dataframe->data[i]; i++) {
+    for (int i = 0; i < dataframe->nb_columns; i++) {
         if (!strcmp(column, cpy_filter->column_names[i]))
             return (make_cpy_filter(dataframe, filter_func, i, cpy_filter)
             == NULL) ? NULL : cpy_filter;
