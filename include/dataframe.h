@@ -17,6 +17,7 @@
     #include <errno.h>
     #include <string.h>
     #include <math.h>
+    #include <stdbool.h>
 
 typedef enum {
     BOOL,
@@ -113,5 +114,6 @@ void *df_get_value(dataframe_t *, int, const char *);
 void **df_get_values(dataframe_t *, const char *);
 void **df_get_unique_values(dataframe_t *, const char *);
 void df_free(dataframe_t *);
+dataframe_t *df_sort(dataframe_t *, const char *, bool(*)(void *, void *));
 
 #endif
