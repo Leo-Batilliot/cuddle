@@ -41,8 +41,9 @@ SRC	=	src/lib/split_str.c 		\
 		src/pandas/df_get_value.c 			\
 		src/pandas/df_apply.c 				\
 		src/pandas/df_get_unique_values.c 	\
+		src/pandas/df_sort.c 		\
 		src/pandas/df_free.c 				\
-		src/pandas/df_filter.c 				\
+		src/pandas/df_filter.c 			\
 
 # COLORS
 RED=\033[31m
