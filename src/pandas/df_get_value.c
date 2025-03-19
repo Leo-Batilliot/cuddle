@@ -12,7 +12,7 @@ void *df_get_value(dataframe_t *dataframe, int row, const char *column)
     if (!dataframe || row <= 0 || row > dataframe->nb_rows || !column)
         return NULL;
     for (int i = 0; dataframe->column_names[i]; i++) {
-        if (!strcmp(column, dataframe->column_names[i]))
+        if (!my_tab_strcmp(column, dataframe->column_names[i]))
             return dataframe->data[row - 1][i];
     }
     return NULL;
@@ -31,7 +31,7 @@ static int fill_return(void ***to_return, int i, dataframe_t *dataframe)
 static int fill_column(void ***to_return, int i,
     const char *column, dataframe_t *dataframe)
 {
-    if (!strcmp(dataframe->column_names[i], column)) {
+    if (!my_tab_strcmp(column, dataframe->column_names[i])) {
         (*to_return) = malloc(sizeof(void *) * (dataframe->nb_rows + 1));
         if (!(*to_return))
             return -1;

@@ -36,7 +36,7 @@ dataframe_t *df_sort(dataframe_t *dataframe, const char *column,
     if (!cpy)
         return NULL;
     for (int i = 0; i < cpy->nb_columns; i++)
-        if (!my_strcmp(cpy->column_names[i], column)) {
+        if (!my_tab_strcmp(column, cpy->column_names[i])) {
             sort_column(cpy, i, sort_func);
             break;
         }

@@ -59,12 +59,14 @@ typedef struct list {
 int my_strlen(const char *);
 int my_strcmp(const char *, const char *);
 int my_strncmp(const char *, const char *, int);
+int my_tab_strcmp(const char *, const char *);
 char *my_strdup(const char *);
 char *array_to_str(const char **, char);
 char *my_strcat(const char *, const char *, const char *);
 int my_strncpy(const char *, const char *, int);
 char *str_lowcase(char *);
 int is_bool(const char *);
+char *my_strndup(const char *, int);
 
 /*    LIB ARRAY    */
 char **split_str(const char *, const char *);
@@ -96,7 +98,8 @@ column_type_t get_type(const char *);
 char *type_value_to_str(unsigned int);
 dataframe_t *init_data(void);
 FILE *try_to_open(const char *, const char *);
-char *correct_and_dup(char *str, column_type_t type);
+char *strclean(const char *);
+char *correct_type(char *, column_type_t);
 void *convert_to_type(void *, column_type_t);
 void print_value(FILE *, void *, column_type_t, char *);
 column_type_t is_previous_type(column_type_t, column_type_t, int);

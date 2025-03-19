@@ -92,7 +92,7 @@ static int fill_rows(void ***to_return, int i, dataframe_t *dataframe)
 static int column_f(void ***to_return, int i,
     const char *column, dataframe_t *dataframe)
 {
-    if (!strcmp(dataframe->column_names[i], column)) {
+    if (!my_tab_strcmp(column, dataframe->column_names[i])) {
         (*to_return) = malloc(sizeof(void *) * (dataframe->nb_rows + 1));
         if (!(*to_return))
             return -1;

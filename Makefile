@@ -25,6 +25,7 @@ SRC	=	src/lib/split_str.c 				\
 		src/lib/my_get_nbr.c 				\
 		src/lib/types.c 					\
 		src/lib/str_lowcase.c 				\
+		src/lib/strclean.c 					\
 		src/utils/types.c 	 				\
 		src/utils/data_struct.c 			\
 		src/utils/open_file.c 				\

@@ -64,7 +64,7 @@ dataframe_t *df_apply(dataframe_t *dataframe, const char *column,
     if (!new_df)
         return NULL;
     for (int i = 0; i < new_df->nb_columns && new_df->column_names[i]; i++) {
-        if (!strcmp(new_df->column_names[i], column)) {
+        if (!my_tab_strcmp(column, new_df->column_names[i])) {
             res = compare_column(new_df, i, dataframe, apply_func);
             return (res == -1) ? NULL : new_df;
         }

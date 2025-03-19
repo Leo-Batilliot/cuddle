@@ -32,7 +32,7 @@ static int set_strings(dataframe_t *data)
     }
     for (int i = 0; i < data->nb_columns; i++)
         for (int y = 0; y < data->nb_rows; y++)
-            data->strings[y][i] = correct_and_dup((char *)
+            data->strings[y][i] = correct_type((char *)
                 data->data[y][i], data->column_types[i]);
     return 0;
 }

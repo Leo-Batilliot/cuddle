@@ -52,7 +52,7 @@ dataframe_t *df_to_type(dataframe_t *dataframe,
     if (!cpy)
         return NULL;
     for (int i = 0; i < cpy->nb_columns && cpy->data[i]; i++)
-        if (!strcmp(column, cpy->column_names[i]))
+        if (!my_tab_strcmp(column, cpy->column_names[i]))
             return update_cpy(downcast, i, cpy, dataframe)
             == NULL ? NULL : cpy;
     return NULL;

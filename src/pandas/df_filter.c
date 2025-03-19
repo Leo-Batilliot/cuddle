@@ -125,7 +125,7 @@ dataframe_t *df_filter(dataframe_t *dataframe,
         return NULL;
     free_data_strings(&cpy_filter);
     for (int i = 0; i < dataframe->nb_columns; i++) {
-        if (!strcmp(column, cpy_filter->column_names[i]))
+        if (!my_tab_strcmp(column, cpy_filter->column_names[i]))
             return (make_cpy_filter(dataframe, filter_func, i, cpy_filter)
             == NULL) ? NULL : cpy_filter;
     }
