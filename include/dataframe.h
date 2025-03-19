@@ -107,15 +107,17 @@ dataframe_t *df_tail(dataframe_t *, int);
 dataframe_t *df_head(dataframe_t *, int);
 dataframe_t *df_read_csv(const char *, char *);
 dataframe_t *cpy_instance(dataframe_t *, int, int);
+dataframe_t *df_to_type(dataframe_t *, const char *, column_type_t);
 dataframe_t *df_filter(dataframe_t *, const char *, bool (*)(void *));
-int df_write_csv(dataframe_t *, const char *);
 dataframe_t *df_apply(dataframe_t *, const char *, void *(*)(void *));
+dataframe_t *df_sort(dataframe_t *, const char *, bool(*)(void *, void *));
+int df_write_csv(dataframe_t *, const char *);
+int update_strings(dataframe_t *, dataframe_t *, int, int);
 void df_info(dataframe_t *);
 void df_describe(dataframe_t *);
 void *df_get_value(dataframe_t *, int, const char *);
 void **df_get_values(dataframe_t *, const char *);
 void **df_get_unique_values(dataframe_t *, const char *);
 void df_free(dataframe_t *);
-dataframe_t *df_sort(dataframe_t *, const char *, bool(*)(void *, void *));
 
 #endif

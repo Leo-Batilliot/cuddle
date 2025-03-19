@@ -22,12 +22,11 @@ static int update_int(dataframe_t *new_df, int k, int i)
     return 0;
 }
 
-static int update_strings(dataframe_t *new_df,
+int update_strings(dataframe_t *new_df,
     dataframe_t *dataframe, int k, int i)
 {
     if (new_df->column_types[i] == UNDEFINED)
         return -1;
-    free(new_df->strings[k][i]);
     if (update_int(new_df, k, i) == -1)
         return -1;
     if (new_df->column_types[i] == FLOAT)
@@ -36,7 +35,7 @@ static int update_strings(dataframe_t *new_df,
             return -1;
     if (new_df->column_types[i] == BOOL || new_df->column_types[i] == STRING) {
         new_df->strings[k][i] = my_strdup(dataframe->strings[k][i]);
-        if (!new_df)
+        if (!new_df->strings[k][i])
             return -1;
     }
     return 0;

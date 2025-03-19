@@ -8,42 +8,43 @@
 ## .o FILES DIRECTORY
 OBJ_DIR = obj
 # FILES
-SRC	=	src/lib/split_str.c 		\
-		src/lib/my_strlen.c 		\
-		src/lib/my_strncmp.c 		\
-		src/lib/my_strcmp.c 		\
-		src/lib/my_strncpy.c		\
-		src/lib/my_strcat.c 		\
-		src/lib/free.c 				\
-		src/lib/linked_lists.c 		\
-		src/lib/my_strdup.c 		\
-		src/lib/array_to_str.c 		\
-		src/lib/my_array_len.c 		\
-		src/lib/total_array_len.c 	\
-		src/lib/mini_printf.c 		\
-		src/lib/my_strcpy.c 		\
-		src/lib/my_get_nbr.c 		\
-		src/lib/types.c 			\
-		src/lib/str_lowcase.c 		\
-		src/utils/types.c 	 		\
-		src/utils/data_struct.c 	\
-		src/utils/open_file.c 		\
-		src/utils/trim_array.c 		\
-		src/utils/copy_instance.c 	\
-		src/utils/convert.c 		\
-		src/pandas/df_read_csv.c 	\
-		src/pandas/df_write_csv.c 	\
-		src/pandas/df_shape.c 		\
-		src/pandas/df_head.c 		\
-		src/pandas/df_info.c 		\
-		src/pandas/df_describe.c 	\
-		src/pandas/df_tail.c 		\
+SRC	=	src/lib/split_str.c 				\
+		src/lib/my_strlen.c 				\
+		src/lib/my_strncmp.c 				\
+		src/lib/my_strcmp.c 				\
+		src/lib/my_strncpy.c				\
+		src/lib/my_strcat.c 				\
+		src/lib/free.c 						\
+		src/lib/linked_lists.c 				\
+		src/lib/my_strdup.c 				\
+		src/lib/array_to_str.c 				\
+		src/lib/my_array_len.c 				\
+		src/lib/total_array_len.c 			\
+		src/lib/mini_printf.c 				\
+		src/lib/my_strcpy.c 				\
+		src/lib/my_get_nbr.c 				\
+		src/lib/types.c 					\
+		src/lib/str_lowcase.c 				\
+		src/utils/types.c 	 				\
+		src/utils/data_struct.c 			\
+		src/utils/open_file.c 				\
+		src/utils/trim_array.c 				\
+		src/utils/copy_instance.c 			\
+		src/utils/convert.c 				\
+		src/pandas/df_read_csv.c 			\
+		src/pandas/df_write_csv.c 			\
+		src/pandas/df_shape.c 				\
+		src/pandas/df_head.c 				\
+		src/pandas/df_info.c 				\
+		src/pandas/df_describe.c 			\
+		src/pandas/df_tail.c 				\
 		src/pandas/df_get_value.c 			\
 		src/pandas/df_apply.c 				\
 		src/pandas/df_get_unique_values.c 	\
-		src/pandas/df_sort.c 		\
+		src/pandas/df_sort.c 				\
 		src/pandas/df_free.c 				\
-		src/pandas/df_filter.c 			\
+		src/pandas/df_filter.c 				\
+		src/pandas/df_totype.c 				\
 
 # COLORS
 RED=\033[31m
@@ -54,7 +55,7 @@ RESET=\033[0m
 
 # VARIABLES
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
-CFLAGS = -Wextra -Wall -W -Werror -I include -lm
+CFLAGS = -Wextra -Wall -W -Werror -I include -lm -g
 CC = ar rcs
 NAME = libcuddle.a
 

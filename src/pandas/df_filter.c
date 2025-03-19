@@ -130,5 +130,5 @@ dataframe_t *df_filter(dataframe_t *dataframe,
             return (make_cpy_filter(dataframe, filter_func, i, cpy_filter)
             == NULL) ? NULL : cpy_filter;
     }
-    return cpy_filter;
+    return NULL;
 }
