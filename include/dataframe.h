@@ -35,7 +35,6 @@ typedef struct {
 } dataframe_shape_t;
 
 typedef struct {
-    int k;
     int nb_rows;
     int nb_columns;
     char **column_names;

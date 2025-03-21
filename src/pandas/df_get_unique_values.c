@@ -59,17 +59,17 @@ static int get_dupli(dataframe_t *dataframe, int *is_dupli,
 }
 
 static int gest_count(int *count, dataframe_t
-    *dataframe, int i, void ***to_return)
+    *dataframe, int index[2], void ***to_return)
 {
     int is_dupli = 0;
 
     for (int j = 0; j < *count; j++) {
         if (get_dupli(dataframe, &is_dupli,
-            to_return, (int[3]){i, dataframe->k, j}) == 1)
+            to_return, (int[3]){index[0], index[1], j}) == 1)
             return 1;
     }
     if (!is_dupli) {
-        (*to_return)[*count] = dataframe->data[dataframe->k][i];
+        (*to_return)[*count] = dataframe->data[index[1]][index[0]];
         (*count)++;
     }
     return 0;
@@ -79,10 +79,10 @@ static int fill_rows(void ***to_return, int i, dataframe_t *dataframe)
 {
     int count = 0;
 
-    for (dataframe->k = 0; dataframe->k < dataframe->nb_rows; dataframe->k++) {
-        if (!dataframe->data[dataframe->k][i])
+    for (int k = 0; k < dataframe->nb_rows; k++) {
+        if (!dataframe->data[k][i])
             continue;
-        if (gest_count(&count, dataframe, i, to_return) == 1)
+        if (gest_count(&count, dataframe, (int[2]) {i, k}, to_return) == 1)
             continue;
     }
     (*to_return)[count] = NULL;
