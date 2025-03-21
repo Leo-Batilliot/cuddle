@@ -21,6 +21,8 @@ int is_bool(const char *str)
     char *buffer = strclean(str);
     int res = 0;
 
+    if (!buffer)
+        return 0;
     if (!strcasecmp(buffer, "false") || !strcasecmp(buffer, "true"))
         res = 1;
     free(buffer);
