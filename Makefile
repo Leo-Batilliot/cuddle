@@ -46,6 +46,7 @@ SRC	=	src/lib/split_str.c 				\
 		src/pandas/df_free.c 				\
 		src/pandas/df_filter.c 				\
 		src/pandas/df_totype.c 				\
+		src/pandas/df_aggreg.c 				\
 
 # COLORS
 RED=\033[31m
