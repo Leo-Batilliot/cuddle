@@ -39,7 +39,7 @@ static int gest_float_string(int index[3], int *is_dupli,
     }
     if ((dataframe->column_types[index[0]] == STRING
         || dataframe->column_types[index[0]] == BOOL)
-        && (*to_return)[index[1]]
+        && (*to_return)[index[2]]
         && !strcmp((char *)(*to_return)[index[2]],
         dataframe->strings[index[1]][index[0]])) {
         (*is_dupli) = 1;
@@ -96,8 +96,10 @@ static int column_f(void ***to_return, int i,
         (*to_return) = malloc(sizeof(void *) * (dataframe->nb_rows + 1));
         if (!(*to_return))
             return -1;
-        if (fill_rows(to_return, i, dataframe) == -1)
+        if (fill_rows(to_return, i, dataframe) == -1) {
+            free_array(*to_return);
             return -1;
+        }
         (*to_return)[dataframe->nb_rows] = NULL;
         return 0;
     }

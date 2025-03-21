@@ -18,25 +18,24 @@ static int check_cast(column_type_t downcast, int i, dataframe_t *cpy)
     return 0;
 }
 
-static int loop_cast(int i, dataframe_t *cpy,
-    dataframe_t *dataframe, column_type_t downcast)
+static int loop_cast(int i, dataframe_t *cpy, column_type_t downcast)
 {
     for (int k = 0; k < cpy->nb_rows && cpy->data[k][i]; k++) {
         free(cpy->data[k][i]);
         cpy->data[k][i] = convert_to_type(cpy->strings[k][i], downcast);
-        if (update_strings(cpy, dataframe, k, i) == -1)
+        if (update_strings(cpy, k, i) == -1)
             return -1;
     }
     return 0;
 }
 
 static dataframe_t *update_cpy(column_type_t downcast, int i,
-    dataframe_t *cpy, dataframe_t *dataframe)
+    dataframe_t *cpy)
 {
     if (check_cast(downcast, i, cpy) == -1)
         return NULL;
     cpy->column_types[i] = downcast;
-    if (loop_cast(i, cpy, dataframe, downcast) == -1)
+    if (loop_cast(i, cpy, downcast) == -1)
         return NULL;
     return cpy;
 }
@@ -53,7 +52,7 @@ dataframe_t *df_to_type(dataframe_t *dataframe,
         return NULL;
     for (int i = 0; i < cpy->nb_columns && cpy->data[i]; i++)
         if (!my_tab_strcmp(column, cpy->column_names[i]))
-            return update_cpy(downcast, i, cpy, dataframe)
+            return update_cpy(downcast, i, cpy)
             == NULL ? NULL : cpy;
     return NULL;
 }

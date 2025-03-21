@@ -22,10 +22,8 @@ static int update_int(dataframe_t *new_df, int k, int i)
     return 0;
 }
 
-int update_strings(dataframe_t *new_df,
-    dataframe_t *dataframe, int k, int i)
+int update_strings(dataframe_t *new_df, int k, int i)
 {
-    (void) dataframe;
     if (new_df->column_types[i] == UNDEFINED)
         return -1;
     if (update_int(new_df, k, i) == -1)
@@ -35,6 +33,7 @@ int update_strings(dataframe_t *new_df,
             "%.2f", *(float *)new_df->data[k][i]) == -1)
             return -1;
     if (new_df->column_types[i] == BOOL || new_df->column_types[i] == STRING) {
+        free(new_df->strings[k][i]);
         new_df->strings[k][i] = my_strdup((char *) new_df->data[k][i]);
         if (!new_df->strings[k][i])
             return -1;
@@ -43,11 +42,11 @@ int update_strings(dataframe_t *new_df,
 }
 
 static int compare_column(dataframe_t *new_df, int i,
-    dataframe_t *dataframe, void *(*apply_func)(void *value))
+    void *(*apply_func)(void *value))
 {
     for (int k = 0; k < new_df->nb_rows; k++) {
         new_df->data[k][i] = apply_func(new_df->data[k][i]);
-        if (update_strings(new_df, dataframe, k, i) == -1)
+        if (update_strings(new_df, k, i) == -1)
             return -1;
     }
     return 0;
@@ -66,7 +65,7 @@ dataframe_t *df_apply(dataframe_t *dataframe, const char *column,
         return NULL;
     for (int i = 0; i < new_df->nb_columns && new_df->column_names[i]; i++) {
         if (!my_tab_strcmp(column, new_df->column_names[i])) {
-            res = compare_column(new_df, i, dataframe, apply_func);
+            res = compare_column(new_df, i, apply_func);
             return (res == -1) ? NULL : new_df;
         }
     }

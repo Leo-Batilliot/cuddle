@@ -116,7 +116,7 @@ dataframe_t *df_sort(dataframe_t *, const char *, bool(*)(void *, void *));
 dataframe_t *df_groupby(dataframe_t *dataframe, const char *aggregate_by,
     const char **, void *(*)(void **, int));
 int df_write_csv(dataframe_t *, const char *);
-int update_strings(dataframe_t *, dataframe_t *, int, int);
+int update_strings(dataframe_t *, int, int);
 void df_info(dataframe_t *);
 void df_describe(dataframe_t *);
 void *df_get_value(dataframe_t *, int, const char *);

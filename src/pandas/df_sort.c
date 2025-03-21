@@ -44,5 +44,6 @@ dataframe_t *df_sort(dataframe_t *dataframe, const char *column,
             sort_column(cpy, i, sort_func);
             return cpy;
         }
+    df_free(cpy);
     return NULL;
 }
