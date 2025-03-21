@@ -8,9 +8,5 @@
 
 FILE *try_to_open(const char *filename, const char *params)
 {
-    FILE *fd = fopen(filename, params);
-
-    if (!fd)
-        mini_printf(2, "%s", strerror(errno));
-    return fd;
+    return fopen(filename, params);
 }
