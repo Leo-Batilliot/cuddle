@@ -33,7 +33,8 @@ int update_strings(dataframe_t *new_df, int k, int i)
             "%.2f", *(float *)new_df->data[k][i]) == -1)
             return -1;
     if (new_df->column_types[i] == BOOL || new_df->column_types[i] == STRING) {
-        free(new_df->strings[k][i]);
+        if (new_df->strings[k][i])
+            free(new_df->strings[k][i]);
         new_df->strings[k][i] = my_strdup((char *) new_df->data[k][i]);
         if (!new_df->strings[k][i])
             return -1;

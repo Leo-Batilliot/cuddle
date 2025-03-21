@@ -18,16 +18,10 @@ static int not_only_spaces(const char *str, int index)
 
 int is_bool(const char *str)
 {
-    char *buffer;
+    char *buffer = strclean(str);
     int res = 0;
 
-    if (!str)
-        return 0;
-    buffer = my_strdup(str);
-    if (!buffer)
-        return 0;
-    buffer = str_lowcase(buffer);
-    if (!my_strcmp(buffer, "false") || !my_strcmp(buffer, "true"))
+    if (!strcasecmp(buffer, "false") || !strcasecmp(buffer, "true"))
         res = 1;
     free(buffer);
     return res;

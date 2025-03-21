@@ -9,9 +9,9 @@
 
 static int check_cast(column_type_t downcast, int i, dataframe_t *cpy)
 {
-    if (downcast == STRING && (cpy->column_types[i] == INT
-        || cpy->column_types[i] == UINT
-        || cpy->column_types[i] == FLOAT))
+    if (cpy->column_types[i] == STRING && (downcast == INT
+        || downcast == UINT
+        || downcast == FLOAT))
         return -1;
     if (downcast == INT && cpy->column_types[i] == UINT)
         return -1;
@@ -23,6 +23,9 @@ static int loop_cast(int i, dataframe_t *cpy, column_type_t downcast)
     for (int k = 0; k < cpy->nb_rows && cpy->data[k][i]; k++) {
         free(cpy->data[k][i]);
         cpy->data[k][i] = convert_to_type(cpy->strings[k][i], downcast);
+        cpy->strings[k][i] = NULL;
+        if (!cpy->data[k][i])
+            return -1;
         if (update_strings(cpy, k, i) == -1)
             return -1;
     }
@@ -32,6 +35,8 @@ static int loop_cast(int i, dataframe_t *cpy, column_type_t downcast)
 static dataframe_t *update_cpy(column_type_t downcast, int i,
     dataframe_t *cpy)
 {
+    if (downcast == cpy->column_types[i])
+        return cpy;
     if (check_cast(downcast, i, cpy) == -1)
         return NULL;
     cpy->column_types[i] = downcast;
@@ -45,7 +50,7 @@ dataframe_t *df_to_type(dataframe_t *dataframe,
 {
     dataframe_t *cpy = NULL;
 
-    if (!dataframe || !column || !downcast)
+    if (!dataframe || !column || downcast < 0)
         return NULL;
     cpy = cpy_instance(dataframe, 0, dataframe->nb_rows);
     if (!cpy)

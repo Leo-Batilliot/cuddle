@@ -25,7 +25,20 @@ static void *convert_to_other_types(char *str, column_type_t type)
         *flt = atof(str);
         return flt;
     }
-    return strdup(str);
+    if (type == STRING)
+        return strdup(str);
+    return NULL;
+}
+
+static void *convert_str_to_bool(const char *str)
+{
+    if (is_bool(str))
+        return (void *) strdup(str);
+    if ((is_negative_int(str) && atoi(str)) ||
+        (is_unsigned_int(str) && atol(str)) ||
+        (is_float(str) && atof(str)))
+        return strdup("true");
+    return strdup("false");
 }
 
 void *convert_to_type(void *data, column_type_t type)
@@ -38,14 +51,15 @@ void *convert_to_type(void *data, column_type_t type)
         intres = malloc(sizeof(int));
         if (!intres)
             return NULL;
-        if (type == INT)
-            *intres = atoi(str);
-        if (type == BOOL)
-            *intres = (strcasecmp(str, "true") == 0);
         free(data);
         return intres;
-    } else
-        res = convert_to_other_types(str, type);
+    }
+    if (type == BOOL) {
+        res = convert_str_to_bool(str);
+        free(data);
+        return res;
+    }
+    res = convert_to_other_types(str, type);
     free(data);
     return res;
 }
