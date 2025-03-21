@@ -70,6 +70,7 @@ static int parse_file_data(
         if (!splt || my_array_len((const void **) splt) != data->nb_columns) {
             my_free((void *) line);
             return free_array((void **) splt);
+            return -1;
         }
         data->data[i] = (void **) splt;
         data->nb_rows++;
@@ -94,7 +95,7 @@ static int parse_file(FILE *file, dataframe_t *data, const char *separator)
     data->column_names = splt;
     for (; !temp && data->column_names[data->nb_columns]; data->nb_columns++);
     if (temp ||
-        parse_file_data(file, data, separator) || set_types(data) ||
+        parse_file_data(file, data, separator) == -1 || set_types(data) ||
         set_strings(data) || cast_to_types(data))
         temp = 84;
     free(line);
@@ -116,8 +117,11 @@ dataframe_t *df_read_csv(const char *filename, char *separator)
         df_free(data);
         return NULL;
     }
-    if (parse_file(fd, data, separator) == 84)
+    if (parse_file(fd, data, separator) == 84) {
+        fclose(fd);
         df_free(data);
+        return NULL;
+    }
     fclose(fd);
     return data;
 }
