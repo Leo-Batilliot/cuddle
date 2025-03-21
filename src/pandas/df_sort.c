@@ -8,14 +8,18 @@
 
 void sort_data(dataframe_t *df, int index[3], bool(*sort_func)(void *, void *))
 {
-    void *temp = NULL;
+    void **temp = NULL;
+    char **tempstr = NULL;
 
-    if (sort_func(df->data[index[1]][index[0]], df->data[index[2]][index[0]]))
-        for (int k = 0; k < df->nb_columns; k++) {
-            temp = df->data[index[1]][k];
-            df->data[index[1]][k] = df->data[index[2]][k];
-            df->data[index[2]][k] = temp;
-        }
+    if (sort_func(df->data[index[1]][index[0]],
+        df->data[index[2]][index[0]])) {
+        temp = df->data[index[1]];
+        df->data[index[1]] = df->data[index[2]];
+        df->data[index[2]] = temp;
+        tempstr = df->strings[index[1]];
+        df->strings[index[1]] = df->strings[index[2]];
+        df->strings[index[2]] = tempstr;
+    }
 }
 
 void sort_column(dataframe_t *cpy, int col, bool(*sort_func)(void *, void *))
@@ -38,7 +42,7 @@ dataframe_t *df_sort(dataframe_t *dataframe, const char *column,
     for (int i = 0; i < cpy->nb_columns; i++)
         if (!my_tab_strcmp(column, cpy->column_names[i])) {
             sort_column(cpy, i, sort_func);
-            break;
+            return cpy;
         }
-    return cpy;
+    return NULL;
 }

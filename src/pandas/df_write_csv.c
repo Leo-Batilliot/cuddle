@@ -8,8 +8,12 @@
 
 void print_value(FILE *fd, void *value, column_type_t type, char *str)
 {
-    if (type == BOOL || type == STRING || type == FLOAT) {
+    if (type == BOOL || type == STRING) {
         fprintf(fd, "%s", str);
+        return;
+    }
+    if (type == FLOAT) {
+        fprintf(fd, "%.2f", *(float *) value);
         return;
     }
     if (type == INT) {
